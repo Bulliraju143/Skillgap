@@ -1,3 +1,4 @@
+
 import streamlit as st
 import numpy as np
 import pandas as pd
@@ -25,211 +26,53 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Enhanced Custom CSS with modern design from second document
+# Custom CSS
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
-    
-    * { font-family: 'Poppins', sans-serif; }
-    
-    .stApp {
-        background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
-    }
-    
-    .main-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        padding: 3rem 2rem;
-        border-radius: 20px;
-        color: white;
-        text-align: center;
-        margin-bottom: 2rem;
-        box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
-    }
-    
-    .main-header h1 {
-        font-size: 2.5rem;
-        font-weight: 700;
-        margin: 0;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-    }
-    
-    .main-header p {
-        font-size: 1.1rem;
-        margin-top: 0.5rem;
-        opacity: 0.95;
-    }
-    
-    .glass-card {
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        padding: 2rem;
-        border-radius: 15px;
-        margin: 1rem 0;
-        color: white;
-        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-    }
-    
     .metric-card {
-        background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
-        backdrop-filter: blur(20px);
+        background-color: #f0f2f6;
         padding: 20px;
-        border-radius: 15px;
+        border-radius: 10px;
         margin: 10px 0;
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
     }
-    
-    .skill-tag {
-        display: inline-block;
-        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-        color: white;
-        padding: 8px 16px;
-        border-radius: 20px;
-        margin: 5px;
-        font-weight: 600;
-        font-size: 0.9rem;
-        box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
-        transition: transform 0.2s;
-    }
-    
-    .skill-tag:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(79, 172, 254, 0.6);
-    }
-    
     .strong-match {
-        background: linear-gradient(135deg, #38ef7d 0%, #11998e 100%);
-        color: white;
-        padding: 10px 16px;
-        border-radius: 10px;
+        background-color: #d4edda;
+        color: #155724;
+        padding: 8px 12px;
+        border-radius: 5px;
         margin: 5px;
         display: inline-block;
-        font-weight: 600;
-        box-shadow: 0 4px 15px rgba(56, 239, 125, 0.4);
     }
-    
     .partial-match {
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        color: white;
-        padding: 10px 16px;
-        border-radius: 10px;
+        background-color: #fff3cd;
+        color: #856404;
+        padding: 8px 12px;
+        border-radius: 5px;
         margin: 5px;
         display: inline-block;
-        font-weight: 600;
-        box-shadow: 0 4px 15px rgba(240, 147, 251, 0.4);
     }
-    
     .missing-skill {
-        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
-        color: white;
-        padding: 10px 16px;
-        border-radius: 10px;
+        background-color: #f8d7da;
+        color: #721c24;
+        padding: 8px 12px;
+        border-radius: 5px;
         margin: 5px;
         display: inline-block;
-        font-weight: 600;
-        box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
     }
-    
     .priority-high {
-        color: #ff6b6b;
+        color: #dc3545;
         font-weight: bold;
-        text-shadow: 0 2px 4px rgba(255, 107, 107, 0.3);
     }
-    
     .priority-medium {
-        color: #ffa502;
+        color: #ffc107;
         font-weight: bold;
-        text-shadow: 0 2px 4px rgba(255, 165, 2, 0.3);
     }
-    
     .priority-low {
-        color: #38ef7d;
+        color: #28a745;
         font-weight: bold;
-        text-shadow: 0 2px 4px rgba(56, 239, 125, 0.3);
-    }
-    
-    /* Enhanced buttons */
-    .stButton>button {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border: none;
-        border-radius: 10px;
-        padding: 0.75rem 2rem;
-        font-weight: 600;
-        transition: all 0.3s;
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-    }
-    
-    .stButton>button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
-    }
-    
-    /* Enhanced metrics */
-    [data-testid="stMetricValue"] {
-        font-size: 2rem;
-        font-weight: 700;
-        color: #4facfe;
-    }
-    
-    /* Enhanced tabs */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 8px;
-        background: rgba(255, 255, 255, 0.05);
-        padding: 10px;
-        border-radius: 10px;
-    }
-    
-    .stTabs [data-baseweb="tab"] {
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 8px;
-        color: white;
-        font-weight: 600;
-    }
-    
-    .stTabs [aria-selected="true"] {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    }
-    
-    /* Enhanced expanders */
-    .streamlit-expanderHeader {
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 10px;
-        color: white;
-        font-weight: 600;
-    }
-    
-    /* Progress bar */
-    .stProgress > div > div > div > div {
-        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
     }
     </style>
 """, unsafe_allow_html=True)
-
-
-def render_header():
-    """Render the modern animated header"""
-    st.markdown("""
-    <div class="main-header">
-        <h1>🎯 Advanced AI Skill Gap Analyzer</h1>
-        <p>BERT-Powered Semantic Skill Matching & Gap Analysis - Milestone 3</p>
-    </div>
-    """, unsafe_allow_html=True)
-
-
-def create_skill_tags_html(skills):
-    """Create HTML for skill tags with modern styling"""
-    if not skills:
-        return "<p style='color: #999;'>No skills detected</p>"
-    
-    html = '<div style="margin-top: 1rem;">'
-    for skill in sorted(list(skills))[:50]:
-        html += f'<span class="skill-tag">{skill}</span>'
-    if len(skills) > 50:
-        html += f'<span class="skill-tag" style="background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);">+{len(skills)-50} more</span>'
-    html += '</div>'
-    return html
 
 
 @dataclass
@@ -281,6 +124,12 @@ class SentenceBERTEncoder:
     """Handles BERT embedding generation using Sentence-BERT"""
     
     def __init__(self, model_name: str = 'all-MiniLM-L6-v2'):
+        """
+        Initialize Sentence-BERT model
+        
+        Args:
+            model_name: Name of the sentence-transformers model
+        """
         self.model_name = model_name
         self.logger = self._setup_logger()
         self.embedding_cache = {}
@@ -296,9 +145,21 @@ class SentenceBERTEncoder:
     
     def encode_skills(self, skills: List[str], use_cache: bool = True, 
                      show_progress: bool = False) -> np.ndarray:
+        """
+        Encode list of skills into embeddings
+        
+        Args:
+            skills: List of skill strings
+            use_cache: Whether to use cached embeddings
+            show_progress: Show progress bar
+            
+        Returns:
+            numpy array of embeddings
+        """
         if not skills:
             raise ValueError("Skills list cannot be empty")
         
+        # Check cache
         if use_cache:
             cached_embeddings = []
             uncached_skills = []
@@ -311,6 +172,7 @@ class SentenceBERTEncoder:
                     uncached_skills.append(skill)
                     uncached_indices.append(i)
             
+            # Encode uncached skills
             if uncached_skills:
                 new_embeddings = self.model.encode(
                     uncached_skills, 
@@ -318,9 +180,11 @@ class SentenceBERTEncoder:
                     batch_size=32
                 )
                 
+                # Update cache
                 for skill, embedding in zip(uncached_skills, new_embeddings):
                     self.embedding_cache[skill] = embedding
                 
+                # Combine cached and new
                 all_embeddings = [None] * len(skills)
                 cached_idx = 0
                 uncached_idx = 0
@@ -337,6 +201,7 @@ class SentenceBERTEncoder:
             else:
                 return np.array(cached_embeddings)
         else:
+            # Encode without cache
             embeddings = self.model.encode(
                 skills, 
                 show_progress_bar=show_progress,
@@ -344,11 +209,22 @@ class SentenceBERTEncoder:
             )
             return embeddings
     
+    def get_embedding_for_skill(self, skill: str) -> np.ndarray:
+        """Get embedding for a single skill"""
+        if skill in self.embedding_cache:
+            return self.embedding_cache[skill]
+        
+        embedding = self.model.encode([skill])[0]
+        self.embedding_cache[skill] = embedding
+        return embedding
+    
     def clear_cache(self):
+        """Clear embedding cache"""
         self.embedding_cache.clear()
         self.logger.info("Embedding cache cleared")
     
     def _setup_logger(self) -> logging.Logger:
+        """Setup logging"""
         logger = logging.getLogger('BERTEncoder')
         if not logger.handlers:
             logger.setLevel(logging.INFO)
@@ -365,14 +241,70 @@ class SimilarityCalculator:
     def __init__(self):
         self.logger = self._setup_logger()
     
+    def compute_cosine_similarity(self, embedding1: np.ndarray, 
+                                  embedding2: np.ndarray) -> float:
+        """
+        Compute cosine similarity between two embeddings
+        
+        Args:
+            embedding1: First embedding vector
+            embedding2: Second embedding vector
+            
+        Returns:
+            Cosine similarity score (0-1)
+        """
+        # Reshape if needed
+        if embedding1.ndim == 1:
+            embedding1 = embedding1.reshape(1, -1)
+        if embedding2.ndim == 1:
+            embedding2 = embedding2.reshape(1, -1)
+        
+        similarity = cosine_similarity(embedding1, embedding2)[0][0]
+        return float(similarity)
+    
     def compute_similarity_matrix(self, resume_embeddings: np.ndarray,
                                   jd_embeddings: np.ndarray) -> np.ndarray:
+        """
+        Compute pairwise similarity matrix
+        
+        Args:
+            resume_embeddings: Embeddings for resume skills (n_resume x embedding_dim)
+            jd_embeddings: Embeddings for JD skills (n_jd x embedding_dim)
+            
+        Returns:
+            Similarity matrix (n_resume x n_jd)
+        """
         self.logger.info(f"Computing similarity matrix: {resume_embeddings.shape} x {jd_embeddings.shape}")
         similarity_matrix = cosine_similarity(resume_embeddings, jd_embeddings)
         self.logger.info(f"Similarity matrix computed: {similarity_matrix.shape}")
         return similarity_matrix
     
+    def find_best_matches(self, similarity_matrix: np.ndarray, 
+                         threshold: float = 0.5) -> List[Tuple[int, int, float]]:
+        """
+        Find best matches above threshold
+        
+        Args:
+            similarity_matrix: Computed similarity matrix
+            threshold: Minimum similarity threshold
+            
+        Returns:
+            List of (resume_idx, jd_idx, similarity) tuples
+        """
+        matches = []
+        n_resume, n_jd = similarity_matrix.shape
+        
+        for jd_idx in range(n_jd):
+            best_resume_idx = np.argmax(similarity_matrix[:, jd_idx])
+            best_similarity = similarity_matrix[best_resume_idx, jd_idx]
+            
+            if best_similarity >= threshold:
+                matches.append((best_resume_idx, jd_idx, best_similarity))
+        
+        return matches
+    
     def _setup_logger(self) -> logging.Logger:
+        """Setup logging"""
         logger = logging.getLogger('SimilarityCalculator')
         if not logger.handlers:
             logger.setLevel(logging.INFO)
@@ -388,6 +320,15 @@ class SkillGapAnalyzer:
     
     def __init__(self, encoder: SentenceBERTEncoder, calculator: SimilarityCalculator,
                  strong_threshold: float = 0.80, partial_threshold: float = 0.50):
+        """
+        Initialize gap analyzer
+        
+        Args:
+            encoder: BERT encoder instance
+            calculator: Similarity calculator instance
+            strong_threshold: Threshold for strong match
+            partial_threshold: Threshold for partial match
+        """
         self.encoder = encoder
         self.calculator = calculator
         self.strong_threshold = strong_threshold
@@ -396,33 +337,51 @@ class SkillGapAnalyzer:
     
     def analyze(self, resume_skills: List[str], jd_skills: List[str],
                skill_categories: Optional[Dict[str, str]] = None) -> GapAnalysisResult:
+        """
+        Perform complete gap analysis
+        
+        Args:
+            resume_skills: List of skills from resume
+            jd_skills: List of required skills from job description
+            skill_categories: Optional mapping of skills to categories
+            
+        Returns:
+            GapAnalysisResult object with complete analysis
+        """
         self.logger.info(f"Starting gap analysis: {len(resume_skills)} resume skills vs {len(jd_skills)} JD skills")
         
+        # Validate inputs
         if not resume_skills or not jd_skills:
             raise ValueError("Both resume_skills and jd_skills must be non-empty")
         
+        # Step 1: Generate embeddings
         self.logger.info("Step 1: Generating BERT embeddings...")
         resume_embeddings = self.encoder.encode_skills(resume_skills, show_progress=True)
         jd_embeddings = self.encoder.encode_skills(jd_skills, show_progress=True)
         
+        # Step 2: Compute similarity matrix
         self.logger.info("Step 2: Computing similarity matrix...")
         similarity_matrix = self.calculator.compute_similarity_matrix(
             resume_embeddings, 
             jd_embeddings
         )
         
+        # Step 3: Classify matches
         self.logger.info("Step 3: Classifying skill matches...")
         matched_skills = []
         partial_matches = []
         missing_skills = []
         
         for jd_idx, jd_skill in enumerate(jd_skills):
+            # Find best matching resume skill
             best_resume_idx = np.argmax(similarity_matrix[:, jd_idx])
             best_similarity = float(similarity_matrix[best_resume_idx, jd_idx])
             resume_skill = resume_skills[best_resume_idx]
             
+            # Get category
             category = skill_categories.get(jd_skill, 'other') if skill_categories else 'other'
             
+            # Classify based on similarity
             if best_similarity >= self.strong_threshold:
                 match = SkillMatch(
                     jd_skill=jd_skill,
@@ -456,7 +415,10 @@ class SkillGapAnalyzer:
                 )
                 missing_skills.append(match)
         
+        # Step 4: Calculate overall score
         overall_score = self._calculate_overall_score(similarity_matrix)
+        
+        # Step 5: Calculate category scores
         category_scores = self._calculate_category_scores(
             matched_skills, partial_matches, missing_skills
         )
@@ -476,14 +438,19 @@ class SkillGapAnalyzer:
         )
     
     def _calculate_overall_score(self, similarity_matrix: np.ndarray) -> float:
+        """Calculate overall match score"""
+        # Take maximum similarity for each JD skill
         max_similarities = similarity_matrix.max(axis=0)
+        # Average of all maximum similarities
         overall_score = float(np.mean(max_similarities))
         return overall_score
     
     def _calculate_category_scores(self, matched: List[SkillMatch],
                                    partial: List[SkillMatch],
                                    missing: List[SkillMatch]) -> Dict[str, float]:
+        """Calculate scores by category"""
         category_scores = {}
+        
         all_skills = matched + partial + missing
         categories = set(skill.category for skill in all_skills)
         
@@ -496,6 +463,7 @@ class SkillGapAnalyzer:
         return category_scores
     
     def _setup_logger(self) -> logging.Logger:
+        """Setup logging"""
         logger = logging.getLogger('SkillGapAnalyzer')
         if not logger.handlers:
             logger.setLevel(logging.INFO)
@@ -506,13 +474,103 @@ class SkillGapAnalyzer:
         return logger
 
 
+class SkillRanker:
+    """Rank skills by importance and priority"""
+    
+    def __init__(self):
+        self.logger = self._setup_logger()
+    
+    def rank_by_importance(self, skills: List[SkillMatch], 
+                          importance_weights: Optional[Dict[str, float]] = None) -> List[SkillMatch]:
+        """
+        Rank skills by importance
+        
+        Args:
+            skills: List of SkillMatch objects
+            importance_weights: Optional weights for different factors
+            
+        Returns:
+            Ranked list of skills
+        """
+        if not importance_weights:
+            importance_weights = {
+                'similarity': 0.4,
+                'category': 0.3,
+                'priority': 0.3
+            }
+        
+        def calculate_importance_score(skill: SkillMatch) -> float:
+            # Similarity score
+            sim_score = skill.similarity
+            
+            # Category score (missing skills are more important to address)
+            if skill.category == 'MISSING':
+                cat_score = 1.0
+            elif skill.category == 'PARTIAL_MATCH':
+                cat_score = 0.6
+            else:
+                cat_score = 0.2
+            
+            # Priority score
+            priority_map = {'HIGH': 1.0, 'MEDIUM': 0.6, 'LOW': 0.3}
+            pri_score = priority_map.get(skill.priority, 0.5)
+            
+            # Weighted combination
+            importance = (
+                importance_weights['similarity'] * sim_score +
+                importance_weights['category'] * cat_score +
+                importance_weights['priority'] * pri_score
+            )
+            
+            return importance
+        
+        # Sort by importance (descending)
+        ranked_skills = sorted(skills, key=calculate_importance_score, reverse=True)
+        
+        self.logger.info(f"Ranked {len(skills)} skills by importance")
+        return ranked_skills
+    
+    def categorize_by_urgency(self, missing_skills: List[SkillMatch]) -> Dict[str, List[SkillMatch]]:
+        """
+        Categorize missing skills by urgency
+        
+        Returns:
+            Dictionary with 'critical', 'important', and 'beneficial' keys
+        """
+        categorized = {
+            'critical': [],
+            'important': [],
+            'beneficial': []
+        }
+        
+        for skill in missing_skills:
+            if skill.priority == 'HIGH' or skill.similarity < 0.3:
+                categorized['critical'].append(skill)
+            elif skill.priority == 'MEDIUM' or skill.similarity < 0.4:
+                categorized['important'].append(skill)
+            else:
+                categorized['beneficial'].append(skill)
+        
+        return categorized
+    
+    def _setup_logger(self) -> logging.Logger:
+        """Setup logging"""
+        logger = logging.getLogger('SkillRanker')
+        if not logger.handlers:
+            logger.setLevel(logging.INFO)
+        return logger
+
+
 class GapVisualizer:
-    """Create modern visualizations for gap analysis"""
+    """Create visualizations for gap analysis"""
     
     @staticmethod
     def create_similarity_heatmap(similarity_matrix: np.ndarray,
                                  resume_skills: List[str],
                                  jd_skills: List[str]) -> go.Figure:
+        """Create interactive similarity heatmap"""
+        
+        # Limit display to avoid overcrowding
         max_display = 20
         display_resume = resume_skills[:max_display]
         display_jd = jd_skills[:max_display]
@@ -537,14 +595,11 @@ class GapVisualizer:
         ))
         
         fig.update_layout(
-            title=f"Skill Similarity Heatmap",
+            title=f"Skill Similarity Heatmap (Top {min(max_display, len(resume_skills))} x {min(max_display, len(jd_skills))} skills)",
             xaxis_title="Job Description Skills",
             yaxis_title="Resume Skills",
             height=600,
             width=900,
-            paper_bgcolor='rgba(0,0,0,0)',
-            plot_bgcolor='rgba(0,0,0,0)',
-            font=dict(color='white', size=12),
             xaxis={'side': 'bottom'},
             yaxis={'autorange': 'reversed'}
         )
@@ -553,67 +608,151 @@ class GapVisualizer:
     
     @staticmethod
     def create_match_distribution_pie(analysis_result: GapAnalysisResult) -> go.Figure:
+        """Create pie chart for match distribution"""
+        
         stats = analysis_result.get_statistics()
         
         labels = ['Strong Matches', 'Partial Matches', 'Missing Skills']
         values = [stats['matched_count'], stats['partial_count'], stats['missing_count']]
-        colors = ['#38ef7d', '#f093fb', '#ff6b6b']
+        colors = ['#28a745', '#ffc107', '#dc3545']
         
         fig = go.Figure(data=[go.Pie(
             labels=labels,
             values=values,
             marker=dict(colors=colors),
-            hole=0.4,
+            hole=0.3,
             textposition='auto',
-            textinfo='label+percent+value',
-            textfont=dict(size=14, color='white')
+            textinfo='label+percent+value'
         )])
         
         fig.update_layout(
             title="Skill Match Distribution",
             height=500,
-            paper_bgcolor='rgba(0,0,0,0)',
-            plot_bgcolor='rgba(0,0,0,0)',
-            font=dict(color='white', size=14),
             showlegend=True
         )
         
         return fig
     
     @staticmethod
+    def create_skill_comparison_bar(analysis_result: GapAnalysisResult, top_n: int = 15) -> go.Figure:
+        """Create bar chart comparing skill similarities"""
+        
+        all_matches = (analysis_result.matched_skills + 
+                      analysis_result.partial_matches + 
+                      analysis_result.missing_skills)
+        
+        # Sort by similarity
+        all_matches_sorted = sorted(all_matches, key=lambda x: x.similarity, reverse=True)[:top_n]
+        
+        skills = [m.jd_skill for m in all_matches_sorted]
+        similarities = [m.similarity * 100 for m in all_matches_sorted]
+        colors_map = {'STRONG_MATCH': '#28a745', 'PARTIAL_MATCH': '#ffc107', 'MISSING': '#dc3545'}
+        colors = [colors_map[m.category] for m in all_matches_sorted]
+        
+        fig = go.Figure(data=[go.Bar(
+            y=skills,
+            x=similarities,
+            orientation='h',
+            marker=dict(color=colors),
+            text=[f"{s:.1f}%" for s in similarities],
+            textposition='auto'
+        )])
+        
+        fig.update_layout(
+            title=f"Top {top_n} Skills by Similarity Score",
+            xaxis_title="Similarity Score (%)",
+            yaxis_title="Skills",
+            height=600,
+            yaxis=dict(autorange="reversed"),
+            showlegend=False
+        )
+        
+        return fig
+    
+    @staticmethod
+    def create_gap_priority_chart(missing_skills: List[SkillMatch]) -> go.Figure:
+        """Create chart showing gap priorities"""
+        
+        if not missing_skills:
+            # Return empty figure if no missing skills
+            fig = go.Figure()
+            fig.update_layout(
+                title="No Missing Skills",
+                annotations=[dict(
+                    text="All required skills are matched!",
+                    xref="paper", yref="paper",
+                    x=0.5, y=0.5, showarrow=False,
+                    font=dict(size=20)
+                )]
+            )
+            return fig
+        
+        # Sort by similarity (lower similarity = higher priority)
+        sorted_skills = sorted(missing_skills, key=lambda x: x.similarity)[:15]
+        
+        skills = [s.jd_skill for s in sorted_skills]
+        similarities = [s.similarity * 100 for s in sorted_skills]
+        priorities = [s.priority for s in sorted_skills]
+        
+        priority_colors = {
+            'HIGH': '#dc3545',
+            'MEDIUM': '#ffc107',
+            'LOW': '#28a745'
+        }
+        colors = [priority_colors[p] for p in priorities]
+        
+        fig = go.Figure(data=[go.Bar(
+            y=skills,
+            x=similarities,
+            orientation='h',
+            marker=dict(color=colors),
+            text=[f"{s:.1f}% - {p}" for s, p in zip(similarities, priorities)],
+            textposition='auto'
+        )])
+        
+        fig.update_layout(
+            title="Missing Skills by Priority",
+            xaxis_title="Current Similarity (%)",
+            yaxis_title="Skills",
+            height=500,
+            yaxis=dict(autorange="reversed")
+        )
+        
+        return fig
+    
+    @staticmethod
     def create_overall_score_gauge(overall_score: float) -> go.Figure:
+        """Create gauge chart for overall match score"""
+        
         score_percentage = overall_score * 100
         
         fig = go.Figure(go.Indicator(
             mode="gauge+number+delta",
             value=score_percentage,
             domain={'x': [0, 1], 'y': [0, 1]},
-            title={'text': "Overall Match Score", 'font': {'size': 24, 'color': 'white'}},
-            delta={'reference': 70, 'increasing': {'color': "#38ef7d"}},
+            title={'text': "Overall Match Score", 'font': {'size': 24}},
+            delta={'reference': 70, 'increasing': {'color': "green"}},
             gauge={
-                'axis': {'range': [None, 100], 'tickwidth': 1, 'tickcolor': "white"},
-                'bar': {'color': "#667eea"},
-                'bgcolor': "rgba(255,255,255,0.1)",
+                'axis': {'range': [None, 100], 'tickwidth': 1, 'tickcolor': "darkblue"},
+                'bar': {'color': "darkblue"},
+                'bgcolor': "white",
                 'borderwidth': 2,
-                'bordercolor': "rgba(255,255,255,0.3)",
+                'bordercolor': "gray",
                 'steps': [
-                    {'range': [0, 40], 'color': 'rgba(255, 107, 107, 0.3)'},
-                    {'range': [40, 70], 'color': 'rgba(255, 165, 2, 0.3)'},
-                    {'range': [70, 100], 'color': 'rgba(56, 239, 125, 0.3)'}
+                    {'range': [0, 40], 'color': '#ffcccc'},
+                    {'range': [40, 70], 'color': '#ffffcc'},
+                    {'range': [70, 100], 'color': '#ccffcc'}
                 ],
                 'threshold': {
-                    'line': {'color': "#ff6b6b", 'width': 4},
+                    'line': {'color': "red", 'width': 4},
                     'thickness': 0.75,
                     'value': 70
                 }
-            },
-            number={'font': {'color': 'white', 'size': 40}}
+            }
         ))
         
         fig.update_layout(
             height=400,
-            paper_bgcolor='rgba(0,0,0,0)',
-            font=dict(color='white'),
             margin=dict(l=20, r=20, t=50, b=20)
         )
         
@@ -627,6 +766,8 @@ class ReportGenerator:
         self.timestamp = datetime.now()
     
     def generate_text_report(self, analysis_result: GapAnalysisResult) -> str:
+        """Generate detailed text report"""
+        
         stats = analysis_result.get_statistics()
         
         report_lines = []
@@ -636,6 +777,7 @@ class ReportGenerator:
         report_lines.append(f"\nGenerated: {self.timestamp.strftime('%Y-%m-%d %H:%M:%S')}")
         report_lines.append("")
         
+        # Executive Summary
         report_lines.append("-" * 80)
         report_lines.append("EXECUTIVE SUMMARY")
         report_lines.append("-" * 80)
@@ -646,6 +788,7 @@ class ReportGenerator:
         report_lines.append(f"Missing Skills: {stats['missing_count']}")
         report_lines.append("")
         
+        # Strong Matches
         if analysis_result.matched_skills:
             report_lines.append("-" * 80)
             report_lines.append("✓ STRONG MATCHES (Similarity ≥ 80%)")
@@ -656,6 +799,7 @@ class ReportGenerator:
                 report_lines.append(f"    Similarity: {match.similarity*100:.1f}%")
                 report_lines.append("")
         
+        # Partial Matches
         if analysis_result.partial_matches:
             report_lines.append("-" * 80)
             report_lines.append("⚠ PARTIAL MATCHES (Similarity 50-80%)")
@@ -667,6 +811,7 @@ class ReportGenerator:
                 report_lines.append(f"    Recommendation: Strengthen knowledge in {match.jd_skill}")
                 report_lines.append("")
         
+        # Missing Skills
         if analysis_result.missing_skills:
             report_lines.append("-" * 80)
             report_lines.append("✗ CRITICAL GAPS (Similarity < 50%)")
@@ -683,7 +828,48 @@ class ReportGenerator:
         
         return "\n".join(report_lines)
     
+    def generate_csv_report(self, analysis_result: GapAnalysisResult) -> str:
+        """Generate CSV report"""
+        
+        data = []
+        
+        # Add all matches
+        for match in analysis_result.matched_skills:
+            data.append({
+                'JD Skill': match.jd_skill,
+                'Resume Skill': match.resume_skill,
+                'Similarity (%)': f"{match.similarity*100:.2f}",
+                'Category': match.category,
+                'Priority': match.priority,
+                'Status': 'Matched'
+            })
+        
+        for match in analysis_result.partial_matches:
+            data.append({
+                'JD Skill': match.jd_skill,
+                'Resume Skill': match.resume_skill,
+                'Similarity (%)': f"{match.similarity*100:.2f}",
+                'Category': match.category,
+                'Priority': match.priority,
+                'Status': 'Partial'
+            })
+        
+        for match in analysis_result.missing_skills:
+            data.append({
+                'JD Skill': match.jd_skill,
+                'Resume Skill': match.resume_skill,
+                'Similarity (%)': f"{match.similarity*100:.2f}",
+                'Category': match.category,
+                'Priority': match.priority,
+                'Status': 'Missing'
+            })
+        
+        df = pd.DataFrame(data)
+        return df.to_csv(index=False)
+    
     def generate_json_report(self, analysis_result: GapAnalysisResult) -> str:
+        """Generate JSON report"""
+        
         stats = analysis_result.get_statistics()
         
         report_data = {
@@ -700,15 +886,124 @@ class ReportGenerator:
         return json.dumps(report_data, indent=2)
 
 
-class CompleteSkillGapApp:
-    """Complete Milestone 3 Application with Modern UI"""
+class LearningPathGenerator:
+    """Generate personalized learning paths for skill gaps"""
     
     def __init__(self):
+        self.resource_database = self._initialize_resources()
+    
+    def _initialize_resources(self) -> Dict:
+        """Initialize learning resources database"""
+        return {
+            'Python': {
+                'difficulty': 'Medium',
+                'time_estimate': '4-8 weeks',
+                'resources': [
+                    'Python for Everybody (Coursera)',
+                    'Automate the Boring Stuff with Python',
+                    'Official Python Tutorial'
+                ]
+            },
+            'Machine Learning': {
+                'difficulty': 'Hard',
+                'time_estimate': '12-16 weeks',
+                'prerequisites': ['Python', 'Statistics'],
+                'resources': [
+                    'Andrew Ng Machine Learning Course',
+                    'Hands-on Machine Learning with Scikit-Learn',
+                    'Fast.ai Practical Deep Learning'
+                ]
+            },
+            'TensorFlow': {
+                'difficulty': 'Medium',
+                'time_estimate': '6-8 weeks',
+                'prerequisites': ['Python', 'Machine Learning'],
+                'resources': [
+                    'TensorFlow Developer Certificate',
+                    'Deep Learning Specialization',
+                    'TensorFlow Official Tutorials'
+                ]
+            },
+            'AWS': {
+                'difficulty': 'Medium',
+                'time_estimate': '8-12 weeks',
+                'resources': [
+                    'AWS Cloud Practitioner Certification',
+                    'AWS Solutions Architect Associate',
+                    'AWS Free Tier Hands-on Labs'
+                ]
+            },
+            'Docker': {
+                'difficulty': 'Medium',
+                'time_estimate': '2-4 weeks',
+                'resources': [
+                    'Docker Official Documentation',
+                    'Docker Mastery Course',
+                    'Docker for Developers'
+                ]
+            }
+        }
+    
+    def generate_path(self, missing_skills: List[SkillMatch],
+                     current_skills: List[str]) -> List[Dict]:
+        """Generate learning path for missing skills"""
+        
+        learning_plan = []
+        
+        # Sort by priority
+        sorted_skills = sorted(missing_skills, 
+                              key=lambda x: (0 if x.priority == 'HIGH' else 1 if x.priority == 'MEDIUM' else 2,
+                                           x.similarity))
+        
+        for skill_match in sorted_skills:
+            skill = skill_match.jd_skill
+            
+            plan_item = {
+                'skill': skill,
+                'current_similarity': skill_match.similarity,
+                'priority': skill_match.priority,
+                'difficulty': 'Unknown',
+                'time_estimate': 'Varies',
+                'resources': [],
+                'prerequisites': [],
+                'missing_prerequisites': []
+            }
+            
+            # Check if we have info for this skill
+            if skill in self.resource_database:
+                resource_info = self.resource_database[skill]
+                plan_item['difficulty'] = resource_info.get('difficulty', 'Unknown')
+                plan_item['time_estimate'] = resource_info.get('time_estimate', 'Varies')
+                plan_item['resources'] = resource_info.get('resources', [])
+                plan_item['prerequisites'] = resource_info.get('prerequisites', [])
+                
+                # Check prerequisites
+                missing_prereqs = []
+                for prereq in plan_item['prerequisites']:
+                    if prereq.lower() not in [s.lower() for s in current_skills]:
+                        missing_prereqs.append(prereq)
+                
+                plan_item['missing_prerequisites'] = missing_prereqs
+            else:
+                plan_item['resources'] = [f'Search for "{skill}" courses online']
+            
+            learning_plan.append(plan_item)
+        
+        return learning_plan
+
+
+class CompleteSkillGapApp:
+    """Complete Milestone 3 Streamlit Application"""
+    
+    def __init__(self):
+        # Initialize components
         self.encoder = SentenceBERTEncoder()
         self.calculator = SimilarityCalculator()
         self.visualizer = GapVisualizer()
         self.report_generator = ReportGenerator()
+        self.learning_path_gen = LearningPathGenerator()
         
+        # Initialize session state
         if 'analysis_result' not in st.session_state:
             st.session_state.analysis_result = None
         if 'resume_skills' not in st.session_state:
@@ -717,12 +1012,17 @@ class CompleteSkillGapApp:
             st.session_state.jd_skills = []
     
     def run(self):
-        render_header()
+        """Run the complete application"""
         
+        st.title("🎯 AI Skill Gap Analyzer - Milestone 3")
+        st.markdown("### Advanced Skill Gap Analysis with BERT-based Semantic Matching")
+        
+        # Main tabs
         tabs = st.tabs([
             "🔍 Gap Analysis",
             "📊 Visualizations",
             "📈 Similarity Matrix",
+            "🎓 Learning Path",
             "📥 Export Reports",
             "⚙️ Settings"
         ])
@@ -737,28 +1037,32 @@ class CompleteSkillGapApp:
             self._similarity_matrix_tab()
         
         with tabs[3]:
-            self._export_tab()
+            self._learning_path_tab()
         
         with tabs[4]:
+            self._export_tab()
+        
+        with tabs[5]:
             self._settings_tab()
     
     def _gap_analysis_tab(self):
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-        st.markdown("### 🎯 Skill Gap Analysis")
+        """Main gap analysis interface"""
+        
+        st.header("Skill Gap Analysis")
         
         st.markdown("""
-        **Powered by BERT Semantic Understanding:**
+        **How it works:**
         1. Enter skills from resume and job description
-        2. System generates semantic embeddings
-        3. Computes cosine similarity between skills
+        2. System generates BERT embeddings for semantic understanding
+        3. Computes cosine similarity between all skill pairs
         4. Identifies matches, partial matches, and gaps
         5. Provides actionable recommendations
         """)
-        st.markdown('</div>', unsafe_allow_html=True)
         
+        # Input method selection
         input_method = st.radio(
             "Choose input method:",
-            ["Manual Entry", "Sample Data"],
+            ["Manual Entry", "Upload from Milestone 2", "Sample Data"],
             horizontal=True
         )
         
@@ -769,7 +1073,6 @@ class CompleteSkillGapApp:
             col1, col2 = st.columns(2)
             
             with col1:
-                st.markdown('<div class="glass-card">', unsafe_allow_html=True)
                 st.subheader("📄 Resume Skills")
                 resume_text = st.text_area(
                     "Enter skills (one per line):",
@@ -780,10 +1083,8 @@ class CompleteSkillGapApp:
                 if resume_text:
                     resume_skills = [s.strip() for s in resume_text.split('\n') if s.strip()]
                     st.info(f"**{len(resume_skills)} skills entered**")
-                st.markdown('</div>', unsafe_allow_html=True)
             
             with col2:
-                st.markdown('<div class="glass-card">', unsafe_allow_html=True)
                 st.subheader("💼 Job Description Skills")
                 jd_text = st.text_area(
                     "Enter required skills (one per line):",
@@ -794,33 +1095,55 @@ class CompleteSkillGapApp:
                 if jd_text:
                     jd_skills = [s.strip() for s in jd_text.split('\n') if s.strip()]
                     st.info(f"**{len(jd_skills)} skills entered**")
-                st.markdown('</div>', unsafe_allow_html=True)
+        
+        elif input_method == "Upload from Milestone 2":
+            st.info("Upload JSON file exported from Milestone 2")
+            
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                resume_file = st.file_uploader("Upload Resume Skills (JSON)", type=['json'], key='resume_json')
+                if resume_file:
+                    try:
+                        data = json.load(resume_file)
+                        resume_skills = data.get('skills', {}).get('all_skills', [])
+                        st.success(f"✅ Loaded {len(resume_skills)} resume skills")
+                    except Exception as e:
+                        st.error(f"Error loading file: {e}")
+            
+            with col2:
+                jd_file = st.file_uploader("Upload JD Skills (JSON)", type=['json'], key='jd_json')
+                if jd_file:
+                    try:
+                        data = json.load(jd_file)
+                        jd_skills = data.get('skills', {}).get('all_skills', [])
+                        st.success(f"✅ Loaded {len(jd_skills)} JD skills")
+                    except Exception as e:
+                        st.error(f"Error loading file: {e}")
         
         else:  # Sample Data
             st.info("Using sample data for demonstration")
             resume_skills = [
                 "Python", "Machine Learning", "SQL", "Data Analysis",
-                "Pandas", "NumPy", "Scikit-learn", "Git", "Statistics",
-                "Data Visualization", "Excel", "R Programming"
+                "Pandas", "NumPy", "Scikit-learn", "Git", "Statistics"
             ]
             jd_skills = [
                 "Python", "Deep Learning", "TensorFlow", "SQL",
                 "AWS", "Docker", "Kubernetes", "Data Science",
-                "Neural Networks", "Cloud Computing", "PyTorch", "MLOps"
+                "Neural Networks", "Cloud Computing"
             ]
             
             col1, col2 = st.columns(2)
             with col1:
-                st.markdown('<div class="glass-card">', unsafe_allow_html=True)
                 st.success(f"✅ Sample Resume: {len(resume_skills)} skills")
-                st.markdown(create_skill_tags_html(resume_skills), unsafe_allow_html=True)
-                st.markdown('</div>', unsafe_allow_html=True)
+                with st.expander("View skills"):
+                    st.write(resume_skills)
             with col2:
-                st.markdown('<div class="glass-card">', unsafe_allow_html=True)
                 st.success(f"✅ Sample JD: {len(jd_skills)} skills")
-                st.markdown(create_skill_tags_html(jd_skills), unsafe_allow_html=True)
-                st.markdown('</div>', unsafe_allow_html=True)
+                with st.expander("View skills"):
+                    st.write(jd_skills)
         
+        # Analysis button
         st.markdown("---")
         
         col1, col2, col3 = st.columns([1, 2, 1])
@@ -831,16 +1154,20 @@ class CompleteSkillGapApp:
                 else:
                     self._perform_analysis(resume_skills, jd_skills)
         
+        # Display results if available
         if st.session_state.analysis_result:
             st.markdown("---")
             self._display_analysis_results(st.session_state.analysis_result)
     
     def _perform_analysis(self, resume_skills: List[str], jd_skills: List[str]):
+        """Perform the gap analysis"""
+        
         with st.spinner("🔄 Analyzing skills..."):
             progress_bar = st.progress(0)
             status_text = st.empty()
             
             try:
+                # Step 1: Initialize analyzer
                 status_text.text("Initializing analyzer...")
                 progress_bar.progress(20)
                 
@@ -854,11 +1181,13 @@ class CompleteSkillGapApp:
                     partial_threshold=partial_threshold
                 )
                 
+                # Step 2: Run analysis
                 status_text.text("Running gap analysis...")
                 progress_bar.progress(40)
                 
                 result = analyzer.analyze(resume_skills, jd_skills)
                 
+                # Step 3: Store results
                 progress_bar.progress(80)
                 status_text.text("Storing results...")
                 
@@ -879,11 +1208,13 @@ class CompleteSkillGapApp:
                 status_text.empty()
     
     def _display_analysis_results(self, result: GapAnalysisResult):
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        """Display analysis results"""
+        
         st.header("📊 Analysis Results")
         
         stats = result.get_statistics()
         
+        # Metrics row
         col1, col2, col3, col4, col5 = st.columns(5)
         
         with col1:
@@ -897,10 +1228,10 @@ class CompleteSkillGapApp:
         with col5:
             st.metric("❌ Missing", stats['missing_count'])
         
-        st.markdown('</div>', unsafe_allow_html=True)
-        
+        # Detailed results
         st.markdown("---")
         
+        # Strong matches
         if result.matched_skills:
             with st.expander(f"✅ **Strong Matches ({len(result.matched_skills)})**", expanded=True):
                 for match in result.matched_skills:
@@ -913,6 +1244,7 @@ class CompleteSkillGapApp:
                     with col2:
                         st.metric("Similarity", f"{match.similarity*100:.1f}%")
         
+        # Partial matches
         if result.partial_matches:
             with st.expander(f"⚠️ **Partial Matches ({len(result.partial_matches)})**"):
                 for match in result.partial_matches:
@@ -926,27 +1258,46 @@ class CompleteSkillGapApp:
                     with col2:
                         st.metric("Similarity", f"{match.similarity*100:.1f}%")
         
+        # Missing skills
         if result.missing_skills:
             with st.expander(f"❌ **Missing Skills ({len(result.missing_skills)})**"):
-                for match in result.missing_skills:
-                    priority_class = f"priority-{match.priority.lower()}"
-                    st.markdown(
-                        f'<div class="missing-skill">**{match.jd_skill}** - <span class="{priority_class}">{match.priority} PRIORITY</span></div>',
-                        unsafe_allow_html=True
-                    )
-                    st.caption(f"Current closest: {match.resume_skill} ({match.similarity*100:.1f}%)")
+                ranker = SkillRanker()
+                categorized = ranker.categorize_by_urgency(result.missing_skills)
+                
+                if categorized['critical']:
+                    st.markdown("**🔴 CRITICAL (High Priority)**")
+                    for match in categorized['critical']:
+                        st.markdown(
+                            f'<div class="missing-skill">**{match.jd_skill}** - Learn this skill!</div>',
+                            unsafe_allow_html=True
+                        )
+                        st.caption(f"Current closest: {match.resume_skill} ({match.similarity*100:.1f}%)")
+                
+                if categorized['important']:
+                    st.markdown("**🟡 IMPORTANT (Medium Priority)**")
+                    for match in categorized['important']:
+                        st.markdown(
+                            f'<div class="missing-skill">**{match.jd_skill}**</div>',
+                            unsafe_allow_html=True
+                        )
+                
+                if categorized['beneficial']:
+                    st.markdown("**🟢 BENEFICIAL (Nice to Have)**")
+                    for match in categorized['beneficial']:
+                        st.markdown(f"• {match.jd_skill}")
     
     def _visualizations_tab(self):
+        """Visualizations tab"""
+        
         if not st.session_state.analysis_result:
             st.info("👈 Please run gap analysis first in the 'Gap Analysis' tab")
             return
         
         result = st.session_state.analysis_result
         
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
         st.header("📊 Visual Analytics")
-        st.markdown('</div>', unsafe_allow_html=True)
         
+        # Overall score gauge
         st.subheader("Overall Match Score")
         fig_gauge = self.visualizer.create_overall_score_gauge(result.overall_score)
         st.plotly_chart(fig_gauge, use_container_width=True)
@@ -954,33 +1305,33 @@ class CompleteSkillGapApp:
         col1, col2 = st.columns(2)
         
         with col1:
-            st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+            # Distribution pie chart
             st.subheader("Match Distribution")
             fig_pie = self.visualizer.create_match_distribution_pie(result)
             st.plotly_chart(fig_pie, use_container_width=True)
-            st.markdown('</div>', unsafe_allow_html=True)
         
         with col2:
-            st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-            st.subheader("Skills Breakdown")
-            stats = result.get_statistics()
-            st.markdown(f"""
-            - **Total Required:** {stats['total_required_skills']}
-            - **Match Rate:** {stats['match_percentage']:.1f}%
-            - **Strong Matches:** {stats['matched_count']}
-            - **Partial Matches:** {stats['partial_count']}
-            - **Gaps:** {stats['missing_count']}
-            """)
-            st.markdown('</div>', unsafe_allow_html=True)
+            # Skill comparison bar
+            st.subheader("Top Skills Comparison")
+            top_n = st.slider("Number of skills to display:", 5, 30, 15, key='bar_top_n')
+            fig_bar = self.visualizer.create_skill_comparison_bar(result, top_n)
+            st.plotly_chart(fig_bar, use_container_width=True)
+        
+        # Gap priority chart
+        if result.missing_skills:
+            st.subheader("Missing Skills Priority Analysis")
+            fig_priority = self.visualizer.create_gap_priority_chart(result.missing_skills)
+            st.plotly_chart(fig_priority, use_container_width=True)
     
     def _similarity_matrix_tab(self):
+        """Similarity matrix tab"""
+        
         if not st.session_state.analysis_result:
             st.info("👈 Please run gap analysis first in the 'Gap Analysis' tab")
             return
         
         result = st.session_state.analysis_result
         
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
         st.header("📈 Similarity Matrix Analysis")
         
         st.markdown("""
@@ -989,8 +1340,8 @@ class CompleteSkillGapApp:
         - **Yellow**: Medium similarity (partial match)
         - **Red**: Low similarity (skill gap)
         """)
-        st.markdown('</div>', unsafe_allow_html=True)
         
+        # Heatmap
         fig_heatmap = self.visualizer.create_similarity_heatmap(
             result.similarity_matrix,
             result.resume_skills,
@@ -998,17 +1349,21 @@ class CompleteSkillGapApp:
         )
         st.plotly_chart(fig_heatmap, use_container_width=True)
         
+        # Detailed matrix view
         with st.expander("📋 View Detailed Similarity Matrix"):
+            # Create DataFrame
             df_matrix = pd.DataFrame(
                 result.similarity_matrix,
                 index=result.resume_skills,
                 columns=result.jd_skills
             )
             
+            # Format as percentages
             df_display = df_matrix.applymap(lambda x: f"{x*100:.1f}%")
             
             st.dataframe(df_display, use_container_width=True)
             
+            # Download matrix
             csv_matrix = df_matrix.to_csv()
             st.download_button(
                 "📥 Download Similarity Matrix (CSV)",
@@ -1017,25 +1372,135 @@ class CompleteSkillGapApp:
                 "text/csv"
             )
     
-    def _export_tab(self):
+    def _learning_path_tab(self):
+        """Learning path recommendations tab"""
+        
         if not st.session_state.analysis_result:
             st.info("👈 Please run gap analysis first in the 'Gap Analysis' tab")
             return
         
         result = st.session_state.analysis_result
         
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        st.header("🎓 Personalized Learning Path")
+        
+        if not result.missing_skills:
+            st.success("🎉 Congratulations! No skill gaps found. You match all required skills!")
+            return
+        
+        st.markdown("""
+        Based on the identified skill gaps, here's your personalized learning path:
+        """)
+        
+        # Generate learning path
+        learning_plan = self.learning_path_gen.generate_path(
+            result.missing_skills,
+            result.resume_skills
+        )
+        
+        # Display learning path
+        for i, item in enumerate(learning_plan, 1):
+            priority_class = f"priority-{item['priority'].lower()}"
+            
+            with st.expander(
+                f"{i}. {item['skill']} - {item['priority']} Priority", 
+                expanded=(i <= 3)
+            ):
+                col1, col2, col3 = st.columns(3)
+                
+                with col1:
+                    st.metric("Current Similarity", f"{item['current_similarity']*100:.1f}%")
+                with col2:
+                    st.metric("Difficulty", item['difficulty'])
+                with col3:
+                    st.metric("Est. Time", item['time_estimate'])
+                
+                # Prerequisites
+                if item['missing_prerequisites']:
+                    st.warning(f"⚠️ **Prerequisites needed:** {', '.join(item['missing_prerequisites'])}")
+                    st.caption("Learn these skills first before tackling this one")
+                elif item['prerequisites']:
+                    st.success(f"✅ **Prerequisites satisfied:** {', '.join(item['prerequisites'])}")
+                
+                # Resources
+                if item['resources']:
+                    st.markdown("**📚 Recommended Resources:**")
+                    for resource in item['resources']:
+                        st.markdown(f"• {resource}")
+                
+                # Action plan
+                st.markdown(f"""
+                **📋 Action Plan:**
+                1. Review prerequisites and foundational concepts
+                2. Complete at least one recommended course
+                3. Build a small project to apply the skill
+                4. Add the skill to your resume once proficient
+                """)
+        
+        # Timeline visualization
+        st.subheader("📅 Learning Timeline")
+        
+        timeline_data = []
+        for i, item in enumerate(learning_plan[:10]):  # Limit to top 10
+            timeline_data.append({
+                'Skill': item['skill'],
+                'Priority': item['priority'],
+                'Weeks': self._estimate_weeks(item['time_estimate'])
+            })
+        
+        df_timeline = pd.DataFrame(timeline_data)
+        
+        fig_timeline = go.Figure(data=[go.Bar(
+            x=df_timeline['Weeks'],
+            y=df_timeline['Skill'],
+            orientation='h',
+            marker=dict(
+                color=['red' if p == 'HIGH' else 'orange' if p == 'MEDIUM' else 'green' 
+                       for p in df_timeline['Priority']]
+            ),
+            text=df_timeline['Weeks'].apply(lambda x: f"{x} weeks"),
+            textposition='auto'
+        )])
+        
+        fig_timeline.update_layout(
+            title="Estimated Learning Timeline",
+            xaxis_title="Estimated Weeks",
+            yaxis_title="Skill",
+            height=400,
+            yaxis=dict(autorange="reversed")
+        )
+        
+        st.plotly_chart(fig_timeline, use_container_width=True)
+    
+    def _estimate_weeks(self, time_str: str) -> int:
+        """Extract weeks from time estimate string"""
+        import re
+        match = re.search(r'(\d+)-?(\d+)?', time_str)
+        if match:
+            # Return average if range, otherwise the single value
+            start = int(match.group(1))
+            end = int(match.group(2)) if match.group(2) else start
+            return (start + end) // 2
+        return 8  # Default
+    
+    def _export_tab(self):
+        """Export reports tab"""
+        
+        if not st.session_state.analysis_result:
+            st.info("👈 Please run gap analysis first in the 'Gap Analysis' tab")
+            return
+        
+        result = st.session_state.analysis_result
+        
         st.header("📥 Export Analysis Reports")
         
         st.markdown("""
         Download your skill gap analysis in various formats:
         """)
-        st.markdown('</div>', unsafe_allow_html=True)
         
         col1, col2, col3 = st.columns(3)
         
         with col1:
-            st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+            # Text report
             st.subheader("📄 Text Report")
             st.markdown("Comprehensive text report with all details")
             
@@ -1048,10 +1513,24 @@ class CompleteSkillGapApp:
                 mime="text/plain",
                 use_container_width=True
             )
-            st.markdown('</div>', unsafe_allow_html=True)
         
         with col2:
-            st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+            # CSV report
+            st.subheader("📊 CSV Report")
+            st.markdown("Spreadsheet format for further analysis")
+            
+            csv_report = self.report_generator.generate_csv_report(result)
+            
+            st.download_button(
+                label="📥 Download CSV",
+                data=csv_report,
+                file_name=f"skill_gap_analysis_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
+                mime="text/csv",
+                use_container_width=True
+            )
+        
+        with col3:
+            # JSON report
             st.subheader("📋 JSON Report")
             st.markdown("Structured data for integration")
             
@@ -1064,53 +1543,30 @@ class CompleteSkillGapApp:
                 mime="application/json",
                 use_container_width=True
             )
-            st.markdown('</div>', unsafe_allow_html=True)
         
-        with col3:
-            st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-            st.subheader("📊 CSV Export")
-            st.markdown("Skills data in spreadsheet format")
-            
-            # Create CSV
-            data = []
-            for match in result.matched_skills + result.partial_matches + result.missing_skills:
-                data.append({
-                    'JD Skill': match.jd_skill,
-                    'Resume Skill': match.resume_skill,
-                    'Similarity': f"{match.similarity*100:.2f}%",
-                    'Category': match.category,
-                    'Priority': match.priority
-                })
-            
-            df = pd.DataFrame(data)
-            csv = df.to_csv(index=False)
-            
-            st.download_button(
-                label="📥 Download CSV",
-                data=csv,
-                file_name=f"skill_analysis_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
-                mime="text/csv",
-                use_container_width=True
-            )
-            st.markdown('</div>', unsafe_allow_html=True)
-        
+        # Preview reports
         st.markdown("---")
         st.subheader("📖 Report Preview")
         
         preview_tab = st.selectbox(
             "Select report to preview:",
-            ["Text Report", "JSON Report"]
+            ["Text Report", "CSV Report", "JSON Report"]
         )
         
         if preview_tab == "Text Report":
             st.text_area("Report Preview", text_report, height=400)
+        elif preview_tab == "CSV Report":
+            df = pd.read_csv(io.StringIO(csv_report))
+            st.dataframe(df, use_container_width=True)
         else:
             st.json(json.loads(json_report))
     
     def _settings_tab(self):
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        """Settings and configuration tab"""
+        
         st.header("⚙️ Settings & Configuration")
         
+        # Similarity thresholds
         st.subheader("🎚️ Similarity Thresholds")
         
         col1, col2 = st.columns(2)
@@ -1144,6 +1600,7 @@ class CompleteSkillGapApp:
         - Missing/Gap: Similarity < {partial_threshold:.0%}
         """)
         
+        # Model settings
         st.markdown("---")
         st.subheader("🤖 Model Configuration")
         
@@ -1157,6 +1614,7 @@ class CompleteSkillGapApp:
             self.encoder.clear_cache()
             st.success("Cache cleared!")
         
+        # About
         st.markdown("---")
         st.subheader("ℹ️ About Milestone 3")
         
@@ -1167,10 +1625,11 @@ class CompleteSkillGapApp:
         - ✅ BERT-based semantic similarity using Sentence-BERT
         - ✅ Cosine similarity computation
         - ✅ Multi-level skill gap identification
+        - ✅ Importance-based ranking system
         - ✅ Interactive similarity matrices
         - ✅ Comprehensive visualizations
         - ✅ Multiple export formats
-        - ✅ Modern, responsive UI design
+        - ✅ Learning path recommendations
         
         **Technologies Used:**
         - Sentence-Transformers (BERT)
@@ -1184,16 +1643,17 @@ class CompleteSkillGapApp:
         - Performance: Fast inference, good accuracy
         - Use Case: Semantic text similarity
         """)
-        st.markdown('</div>', unsafe_allow_html=True)
 
 
 def main():
+    """Main application entry point"""
+    
     try:
         app = CompleteSkillGapApp()
         app.run()
         
+        # Sidebar
         with st.sidebar:
-            st.markdown('<div class="glass-card">', unsafe_allow_html=True)
             st.header("🎯 Milestone 3")
             st.markdown("**Skill Gap Analysis**")
             
@@ -1224,9 +1684,8 @@ def main():
                 st.rerun()
             
             st.markdown("---")
-            st.caption("Milestone 3 - Enhanced UI")
-            st.caption("Version 2.0.0")
-            st.markdown('</div>', unsafe_allow_html=True)
+            st.caption("Milestone 3 - Complete Implementation")
+            st.caption("Version 1.0.0")
     
     except Exception as e:
         st.error(f"Application error: {str(e)}")
@@ -1235,3 +1694,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
